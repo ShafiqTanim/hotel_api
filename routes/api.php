@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CustomerController;
 //use App\Http\Controllers\Api\DesignationController;
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     Route::delete('designation/{designation}','destroy');
 //     Route::post('designation/create','store');
 // });
+Route::controller(CustomerController::class)->group(function(){
+     Route::get('customer/index','index');
+     Route::get('customer/{customer}','show');
+     Route::post('customer/{customer}','update');
+     Route::delete('customer/{customer}','destroy');
+     Route::post('customer/create','store');
+});
