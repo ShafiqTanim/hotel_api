@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(CustomerController::class)->group(function(){
      Route::get('customer/index','index');
      Route::get('customer/{customer}','show');
-     Route::post('customer/{customer}','update');
+     Route::post('customer/edit/{customer}','update');
      Route::delete('customer/{customer}','destroy');
      Route::post('customer/create','store');
 });
