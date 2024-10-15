@@ -1,0 +1,250 @@
+Here’s a structured overview of the entire database schema for the Hotel Management System, incorporating both the Admin and User panels. This includes tables, their relationships, and key attributes.
+
+Admin Panel Database Schema
+Users Table (for admin authentication)
+
+sql
+
+CREATE TABLE Users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,  -- Ensure to hash passwords
+    role ENUM('admin', 'manager', 'staff') DEFAULT 'staff',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+Customers Table
+
+sql
+
+CREATE TABLE Customers (
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone_number VARCHAR(15),
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+Rooms Table
+
+sql
+
+CREATE TABLE Rooms (
+    room_id INT PRIMARY KEY AUTO_INCREMENT,
+    room_number VARCHAR(10) NOT NULL UNIQUE,
+    room_type ENUM('single', 'double', 'suite', 'deluxe') NOT NULL,
+    status ENUM('available', 'booked', 'maintenance') DEFAULT 'available',
+    pricing_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (pricing_id) REFERENCES Pricing(pricing_id)
+);
+Pricing Table
+
+sql
+
+CREATE TABLE Pricing (
+    pricing_id INT PRIMARY KEY AUTO_INCREMENT,
+    room_type ENUM('single', 'double', 'suite', 'deluxe') NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+Bookings Table
+
+sql
+
+CREATE TABLE Bookings (
+    booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT NOT NULL,
+    room_id INT NOT NULL,
+    check_in_date DATE NOT NULL,
+    check_out_date DATE NOT NULL,
+    status ENUM('confirmed', 'checked_in', 'checked_out', 'canceled') DEFAULT 'confirmed',
+    staff_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id),
+    FOREIGN KEY (staff_id) REFERENCES Users(user_id)  -- Updated to link to Users table
+);
+Payments Table
+
+sql
+
+CREATE TABLE Payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT NOT NULL,
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    amount DECIMAL(10, 2) NOT NULL,
+    payment_method ENUM('credit_card', 'debit_card', 'cash', 'online') NOT NULL,
+    status ENUM('paid', 'pending', 'refunded') DEFAULT 'paid',
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)
+);
+Services Table
+
+sql
+
+CREATE TABLE Services (
+    service_id INT PRIMARY KEY AUTO_INCREMENT,
+    service_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+Service Bookings Table
+
+sql
+
+CREATE TABLE ServiceBookings (
+    service_booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT NOT NULL,
+    service_id INT NOT NULL,
+    quantity INT DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id),
+    FOREIGN KEY (service_id) REFERENCES Services(service_id)
+);
+Reviews Table
+
+sql
+
+CREATE TABLE Reviews (
+    review_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT NOT NULL,
+    room_id INT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id)
+);
+Maintenance Requests Table
+
+sql
+
+CREATE TABLE MaintenanceRequests (
+    request_id INT PRIMARY KEY AUTO_INCREMENT,
+    room_id INT NOT NULL,
+    staff_id INT,
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('pending', 'in_progress', 'completed') DEFAULT 'pending',
+    description TEXT,
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id),
+    FOREIGN KEY (staff_id) REFERENCES Users(user_id)
+);
+User Panel Database Schema
+Users Table (for user authentication)
+
+sql
+
+CREATE TABLE Users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,  -- Ensure to hash passwords
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+Customer Profiles Table
+
+sql
+
+CREATE TABLE CustomerProfiles (
+    profile_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    phone_number VARCHAR(15),
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+Bookings Table (linked to CustomerProfiles)
+
+sql
+
+CREATE TABLE Bookings (
+    booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT NOT NULL,
+    room_id INT NOT NULL,
+    check_in_date DATE NOT NULL,
+    check_out_date DATE NOT NULL,
+    status ENUM('confirmed', 'checked_in', 'checked_out', 'canceled') DEFAULT 'confirmed',
+    staff_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES CustomerProfiles(profile_id),
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id),
+    FOREIGN KEY (staff_id) REFERENCES Users(user_id)
+);
+Payments Table (linked to Bookings)
+
+sql
+
+CREATE TABLE Payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT NOT NULL,
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    amount DECIMAL(10, 2) NOT NULL,
+    payment_method ENUM('credit_card', 'debit_card', 'cash', 'online') NOT NULL,
+    status ENUM('paid', 'pending', 'refunded') DEFAULT 'paid',
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)
+);
+Services Table (shared with Admin Panel)
+
+sql
+
+CREATE TABLE Services (
+    service_id INT PRIMARY KEY AUTO_INCREMENT,
+    service_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+Service Bookings Table (linked to Bookings)
+
+sql
+
+CREATE TABLE ServiceBookings (
+    service_booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT NOT NULL,
+    service_id INT NOT NULL,
+    quantity INT DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id),
+    FOREIGN KEY (service_id) REFERENCES Services(service_id)
+);
+Reviews Table (linked to CustomerProfiles)
+
+sql
+
+CREATE TABLE Reviews (
+    review_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT NOT NULL,
+    room_id INT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES CustomerProfiles(profile_id),
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id)
+);
+Relationships Overview:
+The Users table is used for authentication in both admin and user panels.
+Customers and CustomerProfiles are linked to manage customer information.
+Bookings are linked to Rooms and Customers.
+Payments are associated with Bookings for transaction tracking.
+Services and ServiceBookings allow for additional services tied to bookings.
+Reviews enable feedback on rooms from customers.
+Final Notes:
+This combined schema provides a clear distinction between admin and user functionalities while sharing common tables where necessary.
+Ensure to implement proper indexing for performance and data integrity through foreign key constraints.
+Consider adding additional features or tables based on specific requirements, such as promotional offers, user roles, or inventory management.

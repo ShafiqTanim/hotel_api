@@ -1,0 +1,133 @@
+Creating a comprehensive database structure for a Hotel Management System admin panel involves multiple tables to handle various aspects of hotel operations. Here’s a detailed schema that covers essential entities, including their relationships.
+
+1. Customers Table
+
+CREATE TABLE Customers (
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone_number VARCHAR(15),
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+2. Rooms Table
+
+CREATE TABLE Rooms (
+    room_id INT PRIMARY KEY AUTO_INCREMENT,
+    room_number VARCHAR(10) NOT NULL UNIQUE,
+    room_type ENUM('single', 'double', 'suite', 'deluxe') NOT NULL,
+    status ENUM('available', 'booked', 'maintenance') DEFAULT 'available',
+    pricing_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (pricing_id) REFERENCES Pricing(pricing_id)
+);
+3. Pricing Table
+
+CREATE TABLE Pricing (
+    pricing_id INT PRIMARY KEY AUTO_INCREMENT,
+    room_type ENUM('single', 'double', 'suite', 'deluxe') NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+4. Bookings Table
+
+CREATE TABLE Bookings (
+    booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT NOT NULL,
+    room_id INT NOT NULL,
+    check_in_date DATE NOT NULL,
+    check_out_date DATE NOT NULL,
+    status ENUM('confirmed', 'checked_in', 'checked_out', 'canceled') DEFAULT 'confirmed',
+    staff_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id),
+    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
+);
+5. Staff Table
+
+CREATE TABLE Staff (
+    staff_id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,  -- Ensure to hash passwords
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone_number VARCHAR(15),
+    role ENUM('admin', 'manager', 'receptionist', 'cleaning') DEFAULT 'receptionist',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+6. Payments Table
+
+CREATE TABLE Payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT NOT NULL,
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    amount DECIMAL(10, 2) NOT NULL,
+    payment_method ENUM('credit_card', 'debit_card', 'cash', 'online') NOT NULL,
+    status ENUM('paid', 'pending', 'refunded') DEFAULT 'paid',
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)
+);
+7. Services Table
+
+CREATE TABLE Services (
+    service_id INT PRIMARY KEY AUTO_INCREMENT,
+    service_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+8. Service Bookings Table
+
+CREATE TABLE ServiceBookings (
+    service_booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT NOT NULL,
+    service_id INT NOT NULL,
+    quantity INT DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id),
+    FOREIGN KEY (service_id) REFERENCES Services(service_id)
+);
+9. Reviews Table
+
+CREATE TABLE Reviews (
+    review_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT NOT NULL,
+    room_id INT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id)
+);
+10. Inventory Table
+
+CREATE TABLE Inventory (
+    inventory_id INT PRIMARY KEY AUTO_INCREMENT,
+    item_name VARCHAR(100) NOT NULL,
+    quantity INT NOT NULL,
+    unit_price DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+11. Maintenance Requests Table
+
+CREATE TABLE MaintenanceRequests (
+    request_id INT PRIMARY KEY AUTO_INCREMENT,
+    room_id INT NOT NULL,
+    staff_id INT,
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('pending', 'in_progress', 'completed') DEFAULT 'pending',
+    description TEXT,
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id),
+    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
+);

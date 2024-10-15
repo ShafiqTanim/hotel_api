@@ -1,0 +1,113 @@
+To create a user panel database for the Hotel Management System, we will focus on tables that 
+manage user interactions, such as bookings, payments, reviews, and user profiles. 
+The user panel will primarily interact with the Customers, Bookings, Payments, Rooms, Services, and 
+Reviews tables defined earlier.
+
+Here's a suggested database structure for the user panel:
+
+1. Users Table (for authentication)
+
+CREATE TABLE Users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,  -- Ensure to hash passwords
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+2. Customer Profiles Table
+
+CREATE TABLE CustomerProfiles (
+    profile_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    phone_number VARCHAR(15),
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+3. Bookings Table (from Admin Panel)
+
+CREATE TABLE Bookings (
+    booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT NOT NULL,
+    room_id INT NOT NULL,
+    check_in_date DATE NOT NULL,
+    check_out_date DATE NOT NULL,
+    status ENUM('confirmed', 'checked_in', 'checked_out', 'canceled') DEFAULT 'confirmed',
+    staff_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES CustomerProfiles(profile_id),
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id),
+    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
+);
+4. Payments Table (from Admin Panel)
+
+CREATE TABLE Payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT NOT NULL,
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    amount DECIMAL(10, 2) NOT NULL,
+    payment_method ENUM('credit_card', 'debit_card', 'cash', 'online') NOT NULL,
+    status ENUM('paid', 'pending', 'refunded') DEFAULT 'paid',
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)
+);
+5. Services Table (from Admin Panel)
+
+CREATE TABLE Services (
+    service_id INT PRIMARY KEY AUTO_INCREMENT,
+    service_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+6. Service Bookings Table (from Admin Panel)
+
+CREATE TABLE ServiceBookings (
+    service_booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT NOT NULL,
+    service_id INT NOT NULL,
+    quantity INT DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id),
+    FOREIGN KEY (service_id) REFERENCES Services(service_id)
+);
+7. Reviews Table (from Admin Panel)
+
+CREATE TABLE Reviews (
+    review_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT NOT NULL,
+    room_id INT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES CustomerProfiles(profile_id),
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id)
+);
+8. Room Availability Table (optional)
+
+CREATE TABLE RoomAvailability (
+    availability_id INT PRIMARY KEY AUTO_INCREMENT,
+    room_id INT NOT NULL,
+    date DATE NOT NULL,
+    status ENUM('available', 'booked', 'maintenance') DEFAULT 'available',
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id)
+);
+
+
+Relationships Overview:
+Users are linked to CustomerProfiles to manage personal information.
+Bookings are associated with CustomerProfiles for customer identification.
+Payments are tied to Bookings for transaction management.
+Services and ServiceBookings allow users to book additional services linked to their reservations.
+Reviews allow customers to provide feedback on their stays, linked to both CustomerProfiles and Rooms.
+Notes:
+Ensure to implement proper indexing and foreign key constraints for data integrity.
+Implement secure password handling for user authentication.
+The user panel can be built using Laravel’s built-in authentication features and Eloquent ORM to manage relationships efficiently.
+Adapt the schema as necessary based on specific user requirements or additional features.
