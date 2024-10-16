@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\BookingController;
 //use App\Http\Controllers\Api\DesignationController;
 /*
 |--------------------------------------------------------------------------
@@ -37,4 +38,11 @@ Route::controller(CustomerController::class)->group(function(){
      Route::post('customer/edit/{customer}','update');
      Route::delete('customer/{customer}','destroy');
      Route::post('customer/create','store');
+});
+Route::controller(BookingController::class)->group(function(){
+     Route::get('booking/index','index');
+     Route::get('booking/{booking}','show');
+     Route::post('booking/edit/{booking}','update');
+     Route::delete('booking/{booking}','destroy');
+     Route::post('booking/create','store');
 });
