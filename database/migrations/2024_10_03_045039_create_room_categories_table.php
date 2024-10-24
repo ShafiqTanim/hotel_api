@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('room_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->Integer('contact')->unique();
-            $table->string('address');
-            $table->string('nid')->unique();
-            $table->string('nationality');
+            $table->string('category_name');
+            $table->text('description');
+            $table->decimal('price', 10,2);
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('room_categories');
     }
 };
