@@ -5,9 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Room extends Model
+class Day extends Model
 {
     use HasFactory;
-
-    protected $fillable=['id', 'room_number', 'room_type', 'status', 'pricing_id'];
 }

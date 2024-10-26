@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ServiceBooking extends Model
+class ServiceList extends Model
 {
     use HasFactory;
 
-    protected $fillable=['id', 'booking_id', 'service_id', 'quantity'];
+    protected $fillable=['id', 'service_name', 'description', 'price'];
 }

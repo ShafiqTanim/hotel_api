@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rooms', function (Blueprint $table) {
+        Schema::create('room_lists', function (Blueprint $table) {
             $table->id();
             $table->string('room_number')->unique(); // Room number
             $table->enum('room_type', ['single', 'double', 'suite', 'deluxe']); // Room type
