@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('room_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('room_number')->unique(); // Room number
-            $table->enum('room_type', ['single', 'double', 'suite', 'deluxe']); // Room type
-            $table->enum('status', ['available', 'booked', 'maintenance'])->default('available'); // Status (e.g., available, booked)
-            $table->foreignId('pricing_id')->constrained();
+            $table->string('room_number')->unique();
+            $table->foreignId('room_category_id')->nullable()->constrained();
+            $table->text('description')->nullable();
+            $table->enum('status', ['available', 'booked', 'maintenance']);
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rooms');
+        Schema::dropIfExists('room_lists');
     }
 };

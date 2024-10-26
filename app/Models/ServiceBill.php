@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ServiceBill extends Model
 {
     use HasFactory;
+
+    protected $fillable=['booking_id', 'service_list_id', 'quantity', 'discount', 'vat', 'total_price'];
 }

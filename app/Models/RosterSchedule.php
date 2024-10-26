@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RosterSchedule extends Model
 {
     use HasFactory;
+
+    protected $fillable=['employee_id', 'shift_id', 'day_id'];
 }

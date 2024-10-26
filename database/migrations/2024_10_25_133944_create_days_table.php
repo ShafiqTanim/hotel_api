@@ -13,8 +13,20 @@ return new class extends Migration
     {
         Schema::create('days', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique(); // Day name (unique)
             $table->timestamps();
         });
+
+        // Insert day names
+        DB::table('days')->insert([
+            ['name' => 'sat'],
+            ['name' => 'sun'],
+            ['name' => 'mon'],
+            ['name' => 'tue'],
+            ['name' => 'wed'],
+            ['name' => 'thu'],
+            ['name' => 'fri'],
+        ]);
     }
 
     /**

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('food_bills', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('order_id')->constrained();
+            $table->decimal('total_amount', 10, 2);
+            $table->dateTime('issue_date');
             $table->timestamps();
         });
     }

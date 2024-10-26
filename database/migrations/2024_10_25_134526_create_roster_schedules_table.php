@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('roster_schedules', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('employee_id')->constrained();
+            $table->foreignId('shift_id')->constrained();
+            $table->foreignId('day_id')->constrained();
             $table->timestamps();
         });
     }

@@ -9,5 +9,5 @@ class RoomList extends Model
 {
     use HasFactory;
 
-    protected $fillable=['id', 'room_number', 'room_type', 'status', 'pricing_id'];
+    protected $fillable=['room_number', 'room_category_id', 'description', 'status'];
 }

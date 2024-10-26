@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('reservation_requests', function (Blueprint $table) {
             $table->id();
+            $table->string('customer_name'); // Change to string for name
+            $table->foreignId('room_list_id')->nullable()->constrained();
+            $table->string('contact_no');
+            $table->date('check_in_date');
+            $table->date('check_out_date');
+            $table->string('number_of_guest_adult', 2);
+            $table->string('number_of_guest_child', 2);
             $table->timestamps();
         });
     }

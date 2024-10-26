@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('service_bills', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('booking_id')->constrained();
+            $table->foreignId('service_list_id')->constrained();
+            $table->integer('quantity');
+            $table->decimal('discount', 10, 2)->nullable();
+            $table->decimal('vat', 10, 2)->nullable();
+            $table->decimal('total_price', 10, 2);
             $table->timestamps();
         });
     }

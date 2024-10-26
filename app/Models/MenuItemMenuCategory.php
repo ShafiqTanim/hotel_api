@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MenuItemMenuCategory extends Model
 {
     use HasFactory;
+
+    protected $fillable=['menu_item_id', 'menu_category_id'];
 }

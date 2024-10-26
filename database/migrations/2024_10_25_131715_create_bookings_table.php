@@ -13,12 +13,18 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained(); // Foreign key for customer
-            $table->foreignId('room_id')->constrained(); // Foreign key for room
-            $table->dateTime('check_in_date'); // Check-in date
-            $table->dateTime('check_out_date'); // Check-out date
-            $table->enum('status', ['confirmed', 'checked in', 'checked out', 'canceled'])->default('confirmed'); // Booking status
-            $table->foreignId('staff_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('room_list_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('contact_no');
+            $table->date('check_in_date');
+            $table->date('check_out_date');
+            $table->string('number_of_guest_adult', 2);
+            $table->string('number_of_guest_child', 2);
+            $table->decimal('total_amount', 10, 2);
+            $table->decimal('discount', 10, 2)->nullable();
+            $table->decimal('vat', 10, 2)->nullable();
+            $table->integer('status')->default(0)->comment('0 active, 1 cancelled');
+            $table->text('cancel_reason')->nullable();
             $table->timestamps();
         });
     }

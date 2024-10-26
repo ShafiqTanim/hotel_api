@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('service_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('service_name'); // Column for service name
-            $table->text('description')->nullable(); // Optional column for service description
-            $table->decimal('price', 10, 2); // Column for price with precision
+            $table->string('service_name');
+            $table->text('description')->nullable();
+            $table->decimal('price', 10, 2);
             $table->timestamps();
         });
     }
