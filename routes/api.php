@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\RoomCategoryController;
+use App\Http\Controllers\Api\ServiceListController;
 //use App\Http\Controllers\Api\DesignationController;
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +40,20 @@ Route::controller(CustomerController::class)->group(function(){
      Route::post('customer/edit/{customer}','update');
      Route::delete('customer/{customer}','destroy');
      Route::post('customer/create','store');
+});
+Route::controller(RoomCategoryController::class)->group(function(){
+     Route::get('roomcategory/index','index');
+     Route::get('roomcategory/{roomcategory}','show');
+     Route::post('roomcategory/edit/{roomcategory}','update');
+     Route::delete('roomcategory/{roomcategory}','destroy');
+     Route::post('roomcategory/create','store');
+});
+Route::controller(ServiceListController::class)->group(function(){
+     Route::get('servicelist/index','index');
+     Route::get('servicelist/{servicelist}','show');
+     Route::post('servicelist/edit/{servicelist}','update');
+     Route::delete('servicelist/{servicelist}','destroy');
+     Route::post('servicelist/create','store');
 });
 Route::controller(BookingController::class)->group(function(){
      Route::get('booking/index','index');
