@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\RoomCategoryController;
 use App\Http\Controllers\Api\ServiceListController;
+use App\Http\Controllers\Api\RoomListController;
 //use App\Http\Controllers\Api\DesignationController;
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,13 @@ Route::controller(ServiceListController::class)->group(function(){
      Route::post('servicelist/edit/{servicelist}','update');
      Route::delete('servicelist/{servicelist}','destroy');
      Route::post('servicelist/create','store');
+});
+Route::controller(RoomListController::class)->group(function(){
+     Route::get('roomlist/index','index');
+     Route::get('roomlist/{roomlist}','show');
+     Route::post('roomlist/edit/{roomlist}','update');
+     Route::delete('roomlist/{roomlist}','destroy');
+     Route::post('roomlist/create','store');
 });
 Route::controller(BookingController::class)->group(function(){
      Route::get('booking/index','index');

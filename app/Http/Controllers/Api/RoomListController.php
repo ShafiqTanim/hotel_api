@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\BaseController;
+use App\Http\Controllers\Api\BaseController;
 use Illuminate\Http\Request;
 use App\Models\RoomList;
 
 class RoomListController extends BaseController
 {
     public function index(){
-        $data=RoomList::get();
+        $data=RoomList::with('roomcategory')->get();
         return $this->sendResponse($data,"RoomList data");
     }
 
