@@ -18,6 +18,6 @@ class RoomList extends Model
      */
     public function roomcategory()
     {
-        return $this->belongsTo(RoomCategory::class);
+        return $this->belongsTo(RoomCategory::class,'room_category_id');
     }
 }

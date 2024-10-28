@@ -3,11 +3,13 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\RoomCategoryController;
 use App\Http\Controllers\Api\ServiceListController;
 use App\Http\Controllers\Api\RoomListController;
+use App\Http\Controllers\Api\EmployeeController;
 //use App\Http\Controllers\Api\DesignationController;
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,9 @@ Route::controller(AuthController::class)->group(function(){
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+Route::controller(RoleController::class)->group(function(){
+     Route::get('role/index','index');
 });
 // Route::controller(DesignationController::class)->group(function(){
 //     Route::get('designation','index');
@@ -69,4 +74,11 @@ Route::controller(BookingController::class)->group(function(){
      Route::post('booking/edit/{booking}','update');
      Route::delete('booking/{booking}','destroy');
      Route::post('booking/create','store');
+});
+Route::controller(EmployeeController::class)->group(function(){
+     Route::get('employee/index','index');
+     Route::get('employee/{employee}','show');
+     Route::post('employee/edit/{employee}','update');
+     Route::delete('employee/{employee}','destroy');
+     Route::post('employee/create','store');
 });

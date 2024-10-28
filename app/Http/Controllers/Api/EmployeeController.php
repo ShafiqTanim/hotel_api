@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\BaseController;
+use App\Http\Controllers\Api\BaseController;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 
 class EmployeeController extends BaseController
 {
     public function index(){
-        $data=Employee::get();
+        $data=Employee::with('role')->get();
         return $this->sendResponse($data,"Employee data");
     }
 

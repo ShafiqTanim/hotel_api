@@ -13,10 +13,30 @@ class RosterScheduleController extends BaseController
         return $this->sendResponse($data,"RosterSchedule data");
     }
 
-    public function store(Request $request){
-        $data=RosterSchedule::create($request->all());
-        return $this->sendResponse($data,"RosterSchedule created successfully");
+    // public function store(Request $request){
+    //     $data=RosterSchedule::create($request->all());
+    //     return $this->sendResponse($data,"RosterSchedule created successfully");
+    // }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'employeeId' => 'required|exists:employees,id',
+            'shiftId' => 'required|exists:shifts,id',
+            'dayId' => 'required|exists:days,id',
+        ]);
+
+        // Create the new schedule
+        Schedule::create([
+            'employee_id' => $request->employeeId,
+            'shift_id' => $request->shiftId,
+            'day_id' => $request->dayId,
+        ]);
+
+    return response()->json(['message' => 'Schedule created successfully!'], 201);
     }
+
+
     public function show(RosterSchedule $rosterschedule){
         return $this->sendResponse($rosterschedule,"RosterSchedule created successfully");
     }
