@@ -9,7 +9,7 @@ use App\Models\Booking;
 class BookingController extends BaseController
 {
     public function index(){
-        $data=Booking::get();
+        $data=Booking::with('customerid','roomlistid')->get();
         return $this->sendResponse($data,"Booking data");
     }
 
