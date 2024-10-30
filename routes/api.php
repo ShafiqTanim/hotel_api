@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\RoomCategoryController;
 use App\Http\Controllers\Api\ServiceListController;
 use App\Http\Controllers\Api\RoomListController;
 use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\MenuCategoryController;
 //use App\Http\Controllers\Api\DesignationController;
 /*
 |--------------------------------------------------------------------------
@@ -81,4 +82,11 @@ Route::controller(EmployeeController::class)->group(function(){
      Route::post('employee/edit/{employee}','update');
      Route::delete('employee/{employee}','destroy');
      Route::post('employee/create','store');
+});
+Route::controller(MenuCategoryController::class)->group(function(){
+     Route::get('menucategory/index','index');
+     Route::get('menucategory/{menucategory}','show');
+     Route::post('menucategory/edit/{menucategory}','update');
+     Route::delete('menucategory/{menucategory}','destroy');
+     Route::post('menucategory/create','store');
 });
