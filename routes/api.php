@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\RoomListController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\MenuCategoryController;
 use App\Http\Controllers\Api\MenuItemController;
+use App\Http\Controllers\Api\MenuItemMenuCategoryController;
 //use App\Http\Controllers\Api\DesignationController;
 /*
 |--------------------------------------------------------------------------
@@ -97,4 +98,11 @@ Route::controller(MenuItemController::class)->group(function(){
      Route::post('menuitem/edit/{menuitem}','update');
      Route::delete('menuitem/{menuitem}','destroy');
      Route::post('menuitem/create','store');
+});
+Route::controller(MenuItemMenuCategoryController::class)->group(function(){
+     Route::get('menuitemmenucategory/index','index');
+     Route::get('menuitemmenucategory/{menuitemmenucategory}','show');
+     Route::post('menuitemmenucategory/edit/{menuitemmenucategory}','update');
+     Route::delete('menuitemmenucategory/{menuitemmenucategory}','destroy');
+     Route::post('menuitemmenucategory/create','store');
 });

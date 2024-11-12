@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\BaseController;
+use App\Http\Controllers\Api\BaseController;
 use Illuminate\Http\Request;
-use App\Models\MenuItemMenu;
+use App\Models\MenuItemMenuCategory;
 
 class MenuItemMenuCategoryController extends BaseController
 {
     public function index(){
-        $data=MenuItemMenuCategory::get();
+        $data=MenuItemMenuCategory::with('menucategory','menuitem')->get();
         return $this->sendResponse($data,"MenuItemMenuCategory data");
     }
 
