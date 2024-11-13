@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('room_number')->unique();
             $table->foreignId('room_category_id')->nullable()->constrained();
             $table->text('description')->nullable();
-            $table->enum('status', ['available', 'booked', 'maintenance']);
+            $table->integer('status')->default(0)->comment('0 available,1 booked, 2 maintenance');
             $table->timestamps();
         });
     }
