@@ -67,9 +67,11 @@ Route::controller(ServiceListController::class)->group(function(){
 Route::controller(RoomListController::class)->group(function(){
      Route::get('roomlist/index','index');
      Route::get('roomlist/{roomlist}','show');
-     Route::post('roomlist/edit/{roomlist}','update');
+     //Route::post('roomlist/edit/{roomlist}','update');
      Route::delete('roomlist/{roomlist}','destroy');
      Route::post('roomlist/create','store');
+     Route::put('roomlist/edit/{roomlist}', 'update');
+
 });
 Route::controller(BookingController::class)->group(function(){
      Route::get('booking/index','index');
