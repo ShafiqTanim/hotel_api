@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\BaseController;
+use App\Http\Controllers\Api\BaseController;
 use Illuminate\Http\Request;
 use App\Models\ServiceBill;
 
 class ServiceBillController extends BaseController
 {
     public function index(){
-        $data=ServiceBill::get();
+        $data=ServiceBill::with('roomcategory')->get();
         return $this->sendResponse($data,"ServiceBill data");
     }
 
