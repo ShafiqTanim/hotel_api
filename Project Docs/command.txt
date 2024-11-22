@@ -1,0 +1,6 @@
+I need make a payment page where the total price will be calculated for the customer.
+    In my payment table there are two foregn keys connected to the booking id and
+    service bill id for the price,total amount, payment date, and payment method
+    like cash, card, online.
+the total amount will be calculated based on room fare and service bill
+    where total room fare is stored in booking table

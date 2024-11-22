@@ -15,4 +15,14 @@ class ServiceBill extends Model
     {
         return $this->belongsTo(ServiceList::class,'service_list_id');
     }
+
+    public function customerid()
+    {
+        return $this->belongsTo(Customer::class, 'booking_id');
+    }
+
+    public function roomcategory()
+    {
+        return $this->belongsTo(RoomCategory::class, 'room_category_id');
+    }
 }

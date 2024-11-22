@@ -10,4 +10,9 @@ class RoomCategory extends Model
     use HasFactory;
 
     protected $fillable=['category_name', 'description', 'price'];
+
+    public function serviceBills()
+    {
+        return $this->hasMany(ServiceBill::class);
+    }
 }
