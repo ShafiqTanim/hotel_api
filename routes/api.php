@@ -50,6 +50,8 @@ Route::controller(CustomerController::class)->group(function(){
      Route::post('customer/edit/{customer}','update');
      Route::delete('customer/{customer}','destroy');
      Route::post('customer/create','store');
+     Route::post('customer/login','_login');
+     Route::post('customer/register','_register');
 });
 Route::controller(RoomCategoryController::class)->group(function(){
      Route::get('roomcategory/index','index');

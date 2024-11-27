@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('nid')->unique();
             $table->string('nationality');
+            $table->string('password')->nullable();
             $table->timestamps();
         });
     }
