@@ -22,8 +22,9 @@ class CustomerController extends BaseController
     }
 
     public function update(Request $request,$id){
-
-        $data=Customer::where('id',$id)->update($request->all());
+        $input =$request->all();
+        unset($input['isTrusted'], $input['_vts']);
+        $data=Customer::where('id',$id)->update($input);
         return $this->sendResponse($id,"Customer updated successfully");
     }
 
