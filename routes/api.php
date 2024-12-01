@@ -14,6 +14,9 @@ use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\MenuCategoryController;
 use App\Http\Controllers\Api\MenuItemController;
 use App\Http\Controllers\Api\MenuItemMenuCategoryController;
+use App\Http\Controllers\Api\DayController;
+use App\Http\Controllers\Api\ShiftController;
+use App\Http\Controllers\Api\RosterScheduleController;
 //use App\Http\Controllers\Api\DesignationController;
 /*
 |--------------------------------------------------------------------------
@@ -117,4 +120,17 @@ Route::controller(MenuItemMenuCategoryController::class)->group(function(){
      Route::post('menuitemmenucategory/edit/{menuitemmenucategory}','update');
      Route::delete('menuitemmenucategory/{menuitemmenucategory}','destroy');
      Route::post('menuitemmenucategory/create','store');
+});
+Route::controller(DayController::class)->group(function(){
+    Route::get('day/index','index');
+});
+Route::controller(ShiftController::class)->group(function(){
+    Route::get('shift/index','index');
+});
+Route::controller(RosterScheduleController::class)->group(function(){
+    Route::get('rosterschedule/index','index');
+    Route::get('rosterschedule/{rosterschedule}','show');
+    Route::post('rosterschedule/edit/{rosterschedule}','update');
+    Route::delete('rosterschedule/{rosterschedule}','destroy');
+    Route::post('rosterschedule/create','store');
 });
