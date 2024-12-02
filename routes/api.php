@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\ReservationRequestController;
 use App\Http\Controllers\Api\RoomCategoryController;
 use App\Http\Controllers\Api\ServiceListController;
 use App\Http\Controllers\Api\ServiceBillController;
@@ -92,6 +93,13 @@ Route::controller(BookingController::class)->group(function(){
      Route::post('booking/edit/{booking}','update');
      Route::delete('booking/{booking}','destroy');
      Route::post('booking/create','store');
+});
+Route::controller(ReservationRequestController::class)->group(function(){
+     Route::get('reservation/index','index');
+     Route::get('reservation/{reservation}','show');
+     Route::post('reservation/edit/{reservation}','update');
+     Route::delete('reservation/{reservation}','destroy');
+     Route::post('reservation/create','store');
 });
 Route::controller(EmployeeController::class)->group(function(){
      Route::get('employee/index','index');
