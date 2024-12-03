@@ -32,4 +32,34 @@ class BookingController extends BaseController
         $doctor=$booking->delete();
         return $this->sendResponse($booking,"Booking deleted successfully");
     }
+
+    public function approveBooking($id)
+    {
+        // Find the booking by ID
+        $booking = Booking::find($id);
+
+        if (!$booking) {
+            return $this->sendError('Booking not found', 404);
+        }
+
+        // Check if the room is associated and is currently available
+        $room = RoomList::find($booking->room_list_id);
+        if (!$room) {
+            return $this->sendError('Room not found', 404);
+        }
+
+        if ($room->status != 0) {
+            return $this->sendError('Room is not available for booking', 400);
+        }
+
+        // Update the room status to booked (1)
+        $room->status = 1; // 1 = booked
+        $room->save();
+
+        // Update the booking status to approved (0)
+        $booking->status = 0; // 0 = active (approved)
+        $booking->save();
+
+        return $this->sendResponse($booking, "Booking approved successfully");
+    }
 }
