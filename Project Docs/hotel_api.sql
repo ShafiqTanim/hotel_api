@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Nov 22, 2024 at 10:11 AM
--- Server version: 10.6.19-MariaDB-cll-lve
--- PHP Version: 8.3.13
+-- Host: 127.0.0.1
+-- Generation Time: Dec 04, 2024 at 11:08 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `weebpbih_hotel`
+-- Database: `hotel_api`
 --
 
 -- --------------------------------------------------------
@@ -53,11 +53,13 @@ INSERT INTO `bookings` (`id`, `customer_id`, `room_list_id`, `contact_no`, `chec
 (1, 1, 2, '01545', '2024-10-23', '2024-10-31', '1', '0', 1000.00, NULL, NULL, 1, NULL, '2024-10-28 23:45:03', '2024-10-28 23:45:03'),
 (2, 1, 1, '13465', '2024-11-15', '2024-11-16', '1', '0', 1000.00, NULL, NULL, 1, NULL, '2024-11-14 01:31:13', '2024-11-14 01:31:13'),
 (3, 7, 9, '64613164', '2024-11-20', '2024-11-22', '1', '0', 5000.00, NULL, NULL, 0, NULL, '2024-11-15 22:19:54', '2024-11-15 22:19:54'),
+(4, 8, 15, '012549', '2024-11-17', '2024-11-19', '1', '0', 1000.00, NULL, NULL, 0, NULL, '2024-11-15 22:37:51', '2024-11-15 22:37:51'),
 (5, 1, 3, '45684', '2024-11-16', '2024-11-20', '1', '0', 0.00, NULL, NULL, NULL, NULL, '2024-11-15 22:50:11', '2024-11-15 22:50:11'),
 (6, 1, 9, '4473437', '2024-11-17', '2024-11-18', '1', '0', 0.00, 100.00, 5.00, NULL, NULL, '2024-11-15 22:55:45', '2024-11-15 22:55:45'),
 (7, 6, 2, '015454', '2024-11-17', '2024-11-20', '1', '0', 3135.00, 5.00, 10.00, NULL, NULL, '2024-11-16 21:32:29', '2024-11-16 21:32:29'),
 (8, 1, 3, '0125495', '2024-11-17', '2024-11-19', '3', '0', 5016.00, 5.00, 10.00, NULL, NULL, '2024-11-17 01:44:02', '2024-11-17 01:44:02'),
-(9, 1, 9, '4552', '2024-11-17', '2024-11-20', '2', '0', 6270.00, 5.00, 10.00, NULL, NULL, '2024-11-17 02:20:06', '2024-11-17 02:20:06');
+(9, 1, 9, '4552', '2024-11-17', '2024-11-20', '2', '0', 6270.00, 5.00, 10.00, NULL, NULL, '2024-11-17 02:20:06', '2024-11-17 02:20:06'),
+(10, 22, 8, '0215478', '2024-12-04', '2024-12-06', '1', '0', 3600.00, NULL, NULL, NULL, NULL, '2024-12-03 23:02:09', '2024-12-03 23:02:09');
 
 -- --------------------------------------------------------
 
@@ -69,10 +71,11 @@ CREATE TABLE `customers` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `contact` int(11) NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `nid` varchar(255) NOT NULL,
-  `nationality` varchar(255) NOT NULL,
+  `contact` int(11) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `nid` varchar(255) DEFAULT NULL,
+  `nationality` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -81,12 +84,18 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `name`, `email`, `contact`, `address`, `nid`, `nationality`, `created_at`, `updated_at`) VALUES
-(1, 'Tanim', 'tanim@gmail.com', 1236954, 'shf afjj asfj', '456321', 'Bangladeshi', '2024-10-26 21:33:05', '2024-10-26 21:37:15'),
-(6, 'Abu Naser sf', 'nas@gmail.com', 12459856, 'sdfasf asfasf', '45632145', 'Bangladesh', '2024-10-26 23:33:34', '2024-10-26 23:33:34'),
-(7, 'Ahmed Mukut', 'mukuk@gmail.com', 1411665, 'kjsdf askfhsfh', '426564', 'Bangladeshi', '2024-10-26 23:57:11', '2024-10-26 23:57:11'),
-(9, 'Abdul Al Manun', 'mamun@gmail.com', 1239745, 'Agrabad, Chattagram', '456328', 'Bangladeshi', '2024-10-29 22:18:38', '2024-10-29 22:18:38'),
-(10, 'Mahfuzur Rahman', 'Mahfujoffice@gmail.com', 0, 'R  A Bhaban , 11 mile kabir Chairman bari', '92852.28502', '60543.1000008', '2024-11-20 20:50:17', '2024-11-20 20:50:17');
+INSERT INTO `customers` (`id`, `name`, `email`, `contact`, `address`, `nid`, `nationality`, `password`, `created_at`, `updated_at`) VALUES
+(1, 'Tanim', 'tanim@gmail.com', 1236954, 'shf afjj asfj', '456321', 'Bangladeshi', NULL, '2024-10-26 21:33:05', '2024-10-26 21:37:15'),
+(6, 'Abu Naser sf', 'nas@gmail.com', 12459856, 'sdfasf asfasf', '45632145', 'Bangladesh', NULL, '2024-10-26 23:33:34', '2024-10-26 23:33:34'),
+(7, 'Ahmed Mukut', 'mukuk@gmail.com', 1411665, 'kjsdf askfhsfh', '426564', 'Bangladeshi', NULL, '2024-10-26 23:57:11', '2024-10-26 23:57:11'),
+(8, 'Umma Rukiya', 'rukiya@gmail.com', 1256456, 'Bohoddarhat, chattogram', '4563285', 'Bangladeshi', NULL, '2024-10-29 22:17:34', '2024-10-29 22:17:34'),
+(9, 'Abdul Al Manun', 'mamun@gmail.com', 1239745, 'Agrabad, Chattagram', '456328', 'Bangladeshi', NULL, '2024-10-29 22:18:38', '2024-10-29 22:18:38'),
+(10, 'tanim fjd', 'tanim1@gmail.com', 0, '', '', '', '123456', '2024-11-27 00:05:54', '2024-11-27 00:05:54'),
+(18, 'shafiq', 'shafiq@gmail.com', 2147483647, '', '123985', '', '123456', '2024-11-27 01:04:56', '2024-11-27 01:04:56'),
+(19, 'raja', 'raja@gmail.com', 12364800, '', '1230364', '', '123456', '2024-11-27 01:07:58', '2024-11-27 01:07:58'),
+(20, 'Rukiya', 'rukiya1@gmail.com', 125963, '', '125478', '', '123456', '2024-11-27 01:34:01', '2024-11-27 01:34:01'),
+(21, 'ahmed', 'ahmed@gmail.com', 321574, '', '125963', '', '123456', '2024-11-27 01:44:41', '2024-11-27 01:44:41'),
+(22, 'Suraiya Ahmed', 'suraiya@gmail.com', 1236540, NULL, '032589', NULL, '123456', '2024-12-02 21:52:56', '2024-12-02 21:52:56');
 
 -- --------------------------------------------------------
 
@@ -346,6 +355,16 @@ CREATE TABLE `reservation_requests` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `reservation_requests`
+--
+
+INSERT INTO `reservation_requests` (`id`, `customer_name`, `room_list_id`, `contact_no`, `check_in_date`, `check_out_date`, `number_of_guest_adult`, `number_of_guest_child`, `created_at`, `updated_at`) VALUES
+(1, 'shafiq tanim', 3, '0123654', '2024-12-03', '2024-12-10', '', '', '2024-12-02 01:41:13', '2024-12-02 01:41:13'),
+(2, 'ahmed mukut', 1, '012369', '2024-12-02', '2024-12-04', '', '', '2024-12-02 01:44:30', '2024-12-02 01:44:30'),
+(3, 'soniya ahmed', 2, '012589', '2024-12-04', '2024-12-05', '', '', '2024-12-02 01:46:31', '2024-12-02 01:46:31'),
+(4, 'ahmed mukut', 2, '012369', '2024-12-04', '2024-12-09', '1', '0', '2024-12-02 01:50:23', '2024-12-02 01:50:23');
+
 -- --------------------------------------------------------
 
 --
@@ -421,11 +440,11 @@ CREATE TABLE `room_lists` (
 INSERT INTO `room_lists` (`id`, `room_number`, `room_category_id`, `description`, `status`, `created_at`, `updated_at`) VALUES
 (1, '005', 4, 'Ac room', 0, '2024-11-12 22:16:06', '2024-11-15 22:56:14'),
 (2, '001', 1, 'Non Ac room', 0, '2024-11-12 22:32:04', '2024-11-17 02:20:51'),
-(3, '004', 5, NULL, 1, '2024-11-13 00:30:02', '2024-11-17 01:44:03'),
+(3, '004', 5, NULL, 0, '2024-11-13 00:30:02', '2024-12-03 23:01:04'),
 (4, '002', 8, NULL, 0, '2024-11-13 00:30:36', '2024-11-15 22:56:30'),
-(5, '007', 1, NULL, 1, '2024-11-13 00:31:18', '2024-11-13 00:31:18'),
-(8, '014', 3, NULL, 2, '2024-11-13 00:39:53', '2024-11-13 00:39:53'),
-(9, '011', 1, NULL, 1, '2024-11-13 00:44:43', '2024-11-17 02:20:07'),
+(5, '007', 1, NULL, 0, '2024-11-13 00:31:18', '2024-12-03 23:01:13'),
+(8, '014', 3, NULL, 1, '2024-11-13 00:39:53', '2024-12-03 23:02:10'),
+(9, '011', 1, NULL, 0, '2024-11-13 00:44:43', '2024-12-03 23:01:18'),
 (10, '012', 1, NULL, 0, '2024-11-13 00:48:02', '2024-11-13 00:48:02'),
 (11, '013', 1, NULL, 0, '2024-11-13 00:57:40', '2024-11-13 00:57:40'),
 (14, '015', 3, NULL, 0, '2024-11-13 01:03:41', '2024-11-15 22:56:46'),
@@ -702,13 +721,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `days`
@@ -774,7 +793,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `reservation_requests`
 --
 ALTER TABLE `reservation_requests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `roles`
